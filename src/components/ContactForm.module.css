@@ -1,0 +1,30 @@
+.contactForm {
+  margin-bottom: 20px;
+}
+
+.contactForm label {
+  margin-right: 10px;
+}
+
+.contactForm input {
+  margin-right: 10px;
+}
+
+.contactForm button {
+  cursor: pointer;
+  background-color: #4caf50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  border-radius: 8px;
+}
+
+.contactForm button:hover {
+  background-color: #45a049;
+}
