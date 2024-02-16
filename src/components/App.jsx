@@ -2,32 +2,31 @@ import React, { useState, useEffect } from 'react';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
-import styles from './App.module.css';
 import { nanoid } from 'nanoid';
 
 const App = () => {
   const [contacts, setContacts] = useState(() => {
-    const localContacts = localStorage.getItem('contacts');
-    return localContacts ? JSON.parse(localContacts) : [];
+    return JSON.parse(window.localStorage.getItem('contacts')) ?? [];
   });
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const addContact = newContact => {
-    const isDuplicate = contacts.some(
-      contact => contact.name === newContact.name
-    );
-    if (isDuplicate) {
-      alert(`${newContact.name} is already in contacts.`);
+  const addContact = ({ name, number }) => {
+    const newContact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    if (contacts.some(contact => contact.name === newContact.name)) {
+      alert(`${newContact.name} is already in your contacts.`);
       return;
     }
-    setContacts(prevContacts => [
-      { id: nanoid(), ...newContact },
-      ...prevContacts,
-    ]);
+
+    setContacts(prevContacts => [...prevContacts, newContact]);
   };
 
   const deleteContact = contactId => {
@@ -37,7 +36,7 @@ const App = () => {
   };
 
   const changeFilter = e => {
-    setFilter(e.currentTarget.value);
+    setFilter(e.target.value);
   };
 
   const getVisibleContacts = () => {
@@ -48,10 +47,9 @@ const App = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div>
       <h1>Phonebook</h1>
       <ContactForm onAddContact={addContact} />
-
       <h2>Contacts</h2>
       <Filter value={filter} onChangeFilter={changeFilter} />
       <ContactList
